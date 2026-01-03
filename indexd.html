@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows 10 重装指南 · 极简稳定版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+/* --- 全局变量与重置 --- */
+:root {
+  --bg-color: #fdfbf9; /* 暖米色背景 */
+  --card-bg: #ffffff;
+  --primary-gradient: linear-gradient(135deg, #FF6B6B 0%, #556270 100%); /* 高级冷暖撞色 */
+  --accent-orange: #ea580c;
+  --accent-blue: #3b82f6;
+  --text-main: #1f2937;
+  --text-sub: #64748b;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
+  --radius-lg: 24px;
+  --radius-md: 12px;
+}
+
+* { box-sizing: border-box; outline: none; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-color);
+  background-image: radial-gradient(at 0% 0%, rgba(255, 169, 169, 0.1) 0px, transparent 50%),
+                    radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.1) 0px, transparent 50%);
+  background-attachment: fixed; /* 背景固定，增加高级感 */
+  color: var(--text-main);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- 布局容器 --- */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 60px 20px 100px;
+}
+
+/* --- 头部设计 --- */
+header {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+header h1 {
+  font-size: 3rem; /* 大气的大标题 */
+  margin: 0;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* 文字渐变 */
+  letter-spacing: -1px;
+  font-weight: 800;
+  padding-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--text-sub);
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.tags-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(4px);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+/* --- 卡片通用样式 --- */
+.section-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(255,255,255,0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* 装饰性的小圆点 */
+.section-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: transparent;
+  transition: background 0.3s;
+}
+
+.section-card:hover::before {
+  background: var(--primary-gradient);
+}
+
+/* --- 标题样式 --- */
+h2 {
+  font-size: 1.5rem;
+  margin: 0 0 24px;
+  display: flex;
+  align-items: center;
+  color: #111;
+  font-weight: 700;
+}
+
+h2 .num {
+  background: var(--text-main);
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-right: 12px;
+  font-family: monospace;
+}
+
+h3 {
+  font-size: 1.15rem;
+  margin: 28px 0 12px;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+}
+
+h3::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--accent-orange);
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-top: 2px;
+}
+
+/* --- 列表与内容 --- */
+ul, ol { margin: 0; padding-left: 0; list-style: none; }
+
+li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 8px;
+  color: var(--text-sub);
+}
+
+/* 自定义列表图标 */
+li::before {
+  content: '•';
+  color: var(--accent-blue);
+  font-weight: bold;
+  position: absolute;
+  left: 6px;
+}
+
+p { color: var(--text-sub); margin: 8px 0 16px; }
+
+strong { color: var(--text-main); font-weight: 600; }
+
+/* --- 特殊模块：警告与提示 --- */
+.alert {
+  padding: 20px 24px;
+  border-radius: var(--radius-md);
+  margin-top: 20px;
+  display: flex;
+  gap: 16px;
+  font-size: 0.95rem;
+  align-items: start;
+}
+
+.alert-warn {
+  background: #fff7ed;
+  border: 1px solid #ffedd5;
+  color: #9a3412;
+}
+
+.alert-note {
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  color: #1e40af;
+}
+
+.icon { font-size: 20px; line-height: 1; margin-top: 2px; }
+
+/* --- 步骤代码样式 --- */
+code {
+  background: #2d2d2d;
+  color: #e2e8f0;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: "Menlo", monospace;
+  font-size: 0.9em;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.big-btn {
+  display: inline-block;
+  background: #f3f4f6;
+  color: var(--text-main);
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 10px;
+  transition: all 0.2s;
+  border: 1px solid #e5e7eb;
+}
+.big-btn:hover { background: #fff; border-color: var(--accent-blue); color: var(--accent-blue); }
+
+/* --- 底部 --- */
+.footer {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  margin-top: 60px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  padding-top: 30px;
+}
+
+/* 适配移动端 */
+@media (max-width: 600px) {
+  header h1 { font-size: 2rem; }
+  .section-card { padding: 24px; border-radius: 16px; }
+  .container { padding: 40px 16px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>Windows 10 重装指南</h1>
+    <div class="subtitle">小白稳定版 · 拒绝花哨 · 回归纯净</div>
+    
+    <div class="tags-container">
+      <span class="tag">🌱 零基础友好</span>
+      <span class="tag">🛡️ 纯净无广告</span>
+      <span class="tag">⚡️ 性能优化</span>
+    </div>
+  </header>
+
+  <div class="section-card">
+    <h2><span class="num">1</span>重装前准备（核心）</h2>
+    
+    <h3>备份数据 (C盘)</h3>
+    <p>重装会清空 C 盘所有数据，请务必手动复制以下内容到 D 盘或 U 盘：</p>
+    <ul>
+      <li>桌面上的文件</li>
+      <li>「我的文档」文件夹</li>
+      <li>浏览器收藏夹/书签</li>
+      <li>聊天记录 (微信/QQ等)</li>
+    </ul>
+
+    <div class="alert alert-warn">
+      <div class="icon">⚠️</div>
+      <div>
+        <strong>特别注意：</strong><br>
+        本教程只处理 C 盘，只要你操作正确，D/E/F 盘的数据是安全的。但请一定不要在分区界面乱点“删除分区”。
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h2><span class="num">2</span>制作启动 U 盘</h2>
+    <p>你需要一个 <strong>8GB 以上</strong> 的空 U 盘。制作过程会格式化 U 盘，请先转移 U 盘内的资料。</p>
+    
+    <h3>官方工具 (推荐)</h3>
+    <p>直接访问微软官网下载 MediaCreationTool 工具。</p>
+    <a href="https://www.microsoft.com/zh-cn/software-download/windows10" target="_blank" class="big-btn">👉 前往微软官网下载</a>
+
+    <div class="alert alert-note">
+      <div class="icon">💡</div>
+      <div>
+        <strong>制作技巧：</strong><br>
+        下载后打开工具，选择「为另一台电脑创建安装介质」，然后一路“下一步”即可。制作完成后，U 盘就是你的重装神器，不要再往里面存杂乱文件。
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h2><span class="num">3</span>从 U 盘启动</h2>
+    
+    <h3>关键步骤：F12 大法</h3>
+    <ol>
+      <li>关机，插上制作好的 U 盘。</li>
+      <li>按下开机键后，<strong>疯狂点击 <code>F12</code> 键</strong> (联想/戴尔/惠普通用，部分华硕按 F8)。</li>
+      <li>在弹出的菜单中，选择你的 U 盘名称 (通常带有 UEFI 或 USB 字样)。</li>
+    </ol>
+
+    <div class="alert alert-warn">
+      <div class="icon">🚫</div>
+      <div>
+        <strong>鼠标动不了？</strong><br>
+        这是正常的！安装初期驱动未加载，请使用键盘方向键 <code>↑</code> <code>↓</code> 和 <code>Enter</code> 回车键操作。
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h2><span class="num">4</span>安装过程避坑</h2>
+    
+    <h3>类型选择</h3>
+    <p>千万不要选“升级”，请选择：<br><strong>✅ 自定义：仅安装 Windows (高级)</strong></p>
+    
+    <h3>分区操作 (最重要的一步)</h3>
+    <ol>
+      <li>在列表中找到你原来的 C 盘 (根据容量判断)。</li>
+      <li>点击下方工具栏的 <strong>“格式化”</strong> (不要点删除)。</li>
+      <li>格式化完成后，选中它，点击 <strong>“下一步”</strong>。</li>
+    </ol>
+    <p style="margin-top:15px; font-size:0.9em; opacity:0.8;">此时电脑会自动重启多次，那是它在干活，你可以去喝杯茶。</p>
+  </div>
+
+  <div class="section-card">
+    <h2><span class="num">5</span>进系统后的优化</h2>
+    
+    <h3>安静模式设置</h3>
+    <p>如果你不想风扇狂转，建议调整电源计划：</p>
+    <ul>
+      <li>进入 <strong>电源选项</strong> -> 更改计划设置 -> 更改高级电源设置</li>
+      <li><strong>处理器电源管理</strong> -> 最大处理器状态</li>
+      <li>设置为 <strong>99%</strong> (这能有效关闭 CPU 睿频，大幅降低温度)</li>
+    </ul>
+
+    <div class="alert alert-note">
+      <div class="icon">✨</div>
+      <div>
+        <strong>驱动说明：</strong><br>
+        Windows 10 会自动安装大部分驱动。只要连上热点或网线，等待 Windows Update 更新完毕，设备管理器里没有感叹号即可。
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Designed for Simplicity & Stability</p>
+    <p style="opacity: 0.6">建议收藏页面 · 下次重装不求人</p>
+  </div>
+
+</div>
+
+</body>
+</html>
